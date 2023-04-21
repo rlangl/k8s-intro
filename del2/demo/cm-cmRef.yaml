@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-demo
+  namespace: demo
+data:
+  cm-name: megaultrademo
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-demo
+  namespace: demo
+spec:
+  containers:
+  -  image: alpine
+     command: ["echo", "I’m using var: $CM_VAR"]
+     name: pod-demo-alpine
+     env:
+       - name: CM_VAR
+         valueFrom:
+           configMapKeyRef:
+             name: cm-demo
+             key: cm-name

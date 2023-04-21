@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-config-demo
+  namespace: demo
+spec:
+  containers:
+  - image: alpine:latest
+    command: ["echo", "I'm using var: $CM_VAR"]
+    name: pod-demo-alpine
+    env:
+      - name: CM_VAR
+        value: "I'm over 9000"
