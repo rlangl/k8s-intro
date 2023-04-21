@@ -12,5 +12,4 @@ spec:
   containers:
   - image: busybox:latest
     name: pod-demo-bb
-    command: |
-      while true; do echo "Hi, I'm PodMan!" sleep 2; done
+    command: ["/bin/sh", "-c", "while true; do echo \"Hi, I'm PodMan\" sleep 10; done"]
