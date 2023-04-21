@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cm-demo
+  name: cm-mount-demo
   namespace: demo
 data:
-  cm-name: megaultrademo
+  title-name: megaultrademo
   somerandomapp.properties: |
     name=megaApp
     version=1
@@ -12,18 +12,19 @@ data:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: pod-demo
+  name: pod-cmmount-demo
   namespace: demo
 spec:
   containers:
-  -  image: alpine
-     name: pod-demo-alpine
-     command: ["l", "-l", "/config"]
-     volumeMounts:
-     - mountPath: /config
-       name: demo-config-volume
-       readOnly: true
-   volumes:
-     - name: demo-config-volume
-       configMap:
-         name: cm-demo
+    - image: alpine
+      name: alpine-cmmount
+      command: ["bin/sh"]
+      args: ["-c", "while true; do echo \"I'm using CM mount\"; sleep 20; done"]
+      volumeMounts:
+        - mountPath: /config
+          name: demo-config-volume
+          readOnly: true
+  volumes:
+    - name: demo-config-volume
+      configMap:
+        name: cm-mount-demo

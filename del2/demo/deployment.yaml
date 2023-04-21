@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-depl-demo
+  name: depl-nginx-demo
   namespace: demo
   labels:
-    app: nginx-depl-demo
+    app: nginx
 spec:
-  replicas: 3	# Hvor mange replicas
-  selector:		# Hvilke Pods ReplicaSet skal styre
+  replicas: 3 # Hvor mange replicas
+  selector:   # Hvilke Pods ReplicaSet skal styre
     matchLabels:
       app: nginx
   template:
@@ -16,7 +16,7 @@ spec:
         app: nginx
     spec:
       containers:
-      - name: nginx
-        image: nginx:1.14.2
-        ports:
-        - containerPort: 80
+        - name: nginx
+          image: nginx:1.16.1
+          ports:
+            - containerPort: 80

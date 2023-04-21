@@ -9,16 +9,17 @@ data:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: pod-demo
+  name: pod-cmref-demo
   namespace: demo
 spec:
   containers:
-  -  image: alpine
-     command: ["echo", "I’m using var: $CM_VAR"]
-     name: pod-demo-alpine
-     env:
-       - name: CM_VAR
-         valueFrom:
-           configMapKeyRef:
-             name: cm-demo
-             key: cm-name
+    - image: alpine:latest
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do echo \"I’m using var: $CM_VAR\"; sleep 10; done"]
+      name: alpine-cmdemo
+      env:
+        - name: CM_VAR
+          valueFrom:
+            configMapKeyRef:
+              name: cm-demo
+              key: cm-name

@@ -5,15 +5,15 @@ metadata:
   namespace: demo
 spec:
   containers:
-  - image: vish/stress
-    name: pod-limits-alpine
-    args:
-      - -cpus
-      - "2"
-    resources:
-      limits:
-        cpu: 1
-        memory: "200Mi"
-      requests:
-        cpu: 0.5
-        memory: "100Mi"
+    - image: vish/stress
+      name: pod-limits-alpine
+      args:
+        - -cpus
+        - "2"
+      resources:
+        limits:
+          cpu: 1
+          memory: "200Mi"
+        requests:
+          cpu: 0.5
+          memory: "100Mi"

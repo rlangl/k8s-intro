@@ -1,13 +1,14 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: pod-config-demo
+  name: pod-envvar-demo
   namespace: demo
 spec:
   containers:
-  - image: alpine:latest
-    command: ["echo", "I'm using var: $CM_VAR"]
-    name: pod-demo-alpine
+  - image: debian
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do echo $CM_VAR; sleep 10; done"]
+    name: debian-envvar-demo
     env:
-      - name: CM_VAR
-        value: "I'm over 9000"
+    - name: CM_VAR
+      value: "I'm over 9000"
