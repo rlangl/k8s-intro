@@ -1,16 +1,80 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-svc-demo
+  namespace: demo
+spec:
+  selector:
+    name: nginx-ingress-demo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-two-svc-demo
+  namespace: demo
+spec:
+  selector:
+    name: nginx-ingress-two-demo
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 80
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: minimal-ingress
+  name: ingress-demo
   namespace: demo
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: nginx-example
+  ingressClassName: nginx
   rules:
-  - http:
-      paths:
-      - path: /testpath
-        backend:
-          service:
-            name: test
-            port:
-              number: 80
+    - http:
+        paths:
+          - path: /testpath
+            pathType: Prefix
+            backend:
+              service:
+                name: ingress-svc-demo
+                port:
+                  number: 80
+          - path: /nginx
+            pathType: Prefix
+            backend:
+              service:
+                name: ingress-two-svc-demo
+                port:
+                  number: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-ingress-demo
+  namespace: demo
+  labels:
+    name: nginx-ingress-demo
+spec:
+  containers:
+    - image: nginx:1.16.1
+      name: nginx
+      ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-ingress-two-demo
+  namespace: demo
+  labels:
+    name: nginx-ingress-two-demo
+spec:
+  containers:
+    - image: nginx:1.14.1
+      name: nginx
+      ports:
+        - containerPort: 80
