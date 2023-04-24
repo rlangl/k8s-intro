@@ -1,8 +1,1 @@
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx
-  namespace: test
-spec:
-  containers:
-  - image: nginx:1.16.2
+# TODO: Pod (nginx:1.14.1)
