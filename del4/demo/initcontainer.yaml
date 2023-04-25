@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: initcont-demo
+  namespace: demo
+spec:
+  selector:
+    matchLabels:
+      app: sfs-initcont-demo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sfs-initcont-demo
+    spec:
+      initContainers:
+        - name: init
+          image: busybox
+          command: ["/bin/sh", "-c"]
+          args: ["echo \"Melder online!\""]
+      containers:
+        - name: mysql
+          image: mysql
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: local-storage
+        resources:
+          requests:
+            storage: 1Gi
